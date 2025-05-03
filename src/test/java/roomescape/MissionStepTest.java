@@ -1,6 +1,7 @@
 package roomescape;
 
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -11,6 +12,7 @@ import static org.hamcrest.CoreMatchers.is;
 public class MissionStepTest {
 
     @Test
+    @DisplayName("홈 화면 요청 시 상태 코드 200을 반환한다")
     void 일단계() {
         RestAssured.given().log().all()
                 .when().get("/")
@@ -19,6 +21,7 @@ public class MissionStepTest {
     }
 
   @Test
+  @DisplayName("예약 관리 페이지 및 예약 목록 조회시 정상 응답과 초기 데이터 3개를 반환한다")
   void 이단계() {
     RestAssured.given().log().all()
         .when().get("/reservation")

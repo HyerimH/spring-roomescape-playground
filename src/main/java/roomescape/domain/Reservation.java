@@ -1,4 +1,4 @@
-package roomescape.entity;
+package roomescape.domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,9 +18,6 @@ public class Reservation {
         this.name = name;
         this.date = date;
         this.time = time;
-    }
-
-    public Reservation() {
     }
 
     public Long getId() {
