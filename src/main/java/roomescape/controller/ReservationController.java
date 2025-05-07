@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import roomescape.domain.Reservation;
 import roomescape.dto.ReservationRequest;
 import roomescape.dto.ReservationResponse;
+import roomescape.exception.NotFoundException;
 
 @Controller
 public class ReservationController {
@@ -56,7 +58,15 @@ public class ReservationController {
 
     @DeleteMapping("/reservations/{id}")
     public ResponseEntity<Void> deleteReservation(@PathVariable Long id) {
-        reservations.removeIf(reservation -> reservation.getId().equals(id));
+        boolean removed = reservations.removeIf(reservation -> reservation.getId().equals(id));
+        if (!removed) {
+            throw new NotFoundException("해당 예약을 찾을 수 없습니다: "+ id);
+        }
         return ResponseEntity.noContent().build();
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Void> handleNotFound(NotFoundException e) {
+        return ResponseEntity.badRequest().build();
     }
 }
