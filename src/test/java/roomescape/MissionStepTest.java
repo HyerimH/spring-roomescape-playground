@@ -25,7 +25,7 @@ public class MissionStepTest {
     }
 
     @Test
-    @DisplayName("예약 관리 페이지 및 예약 목록 조회시 정상 응답과 초기 데이터 3개를 반환한다")
+    @DisplayName("예약 관리 페이지 및 예약 목록 조회시 정상 응답과 초기 데이터 0개를 반환한다")
     void 이단계() {
         RestAssured.given().log().all()
                 .when().get("/reservation")
@@ -36,7 +36,7 @@ public class MissionStepTest {
                 .when().get("/reservations")
                 .then().log().all()
                 .statusCode(200)
-                .body("size()", is(3)); // 아직 생성 요청이 없으니 Controller에서 임의로 넣어준 Reservation 갯수 만큼 검증하거나 0개임을 확인하세요.
+                .body("size()", is(0)); // 아직 생성 요청이 없으니 Controller에서 임의로 넣어준 Reservation 갯수 만큼 검증하거나 0개임을 확인하세요.
     }
 
     @Test
