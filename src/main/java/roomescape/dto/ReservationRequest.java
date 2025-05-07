@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import roomescape.domain.Reservation;
 
 public class ReservationRequest {
 
@@ -32,5 +33,9 @@ public class ReservationRequest {
 
     public LocalTime getTime() {
         return time;
+    }
+
+    public Reservation toEntity(Long id) {
+        return new Reservation(id, name, date, time);
     }
 }
