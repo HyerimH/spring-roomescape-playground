@@ -21,4 +21,10 @@ public class GlobalExceptionHandler {
         log.error("IllegalArgumentException occurred: {}", e.getMessage());
         return ResponseEntity.badRequest().build();
     }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Void> handleNotFoundException(NotFoundException e) {
+        log.error("NotFoundException occurred: {}", e.getMessage());
+        return ResponseEntity.badRequest().build();
+    }
 }
