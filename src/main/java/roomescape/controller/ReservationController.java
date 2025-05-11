@@ -34,13 +34,13 @@ public class ReservationController {
     // 예약 목록 조회
     @GetMapping("/reservations")
     @ResponseBody
-    public List<Reservation> getReservations() {
-        return reservationService.getAllReservations();
+    public ResponseEntity<List<Reservation>> getReservations() {
+        return ResponseEntity.ok(reservationService.getAllReservations());
     }
 
     // 예약 생성
     @PostMapping("/reservations")
-    @ResponseBody
+    //@ResponseBody
     public ResponseEntity<ReservationResponse> addReservation(@Valid @RequestBody ReservationRequest request) {
         ReservationResponse response = reservationService.addReservation(request);
         return ResponseEntity
@@ -50,6 +50,7 @@ public class ReservationController {
 
     // 예약 삭제
     @DeleteMapping("/reservations/{id}")
+    @ResponseBody
     public ResponseEntity<Void> deleteReservation(@PathVariable Long id) {
         reservationService.deleteReservation(id);
         return ResponseEntity.noContent().build();

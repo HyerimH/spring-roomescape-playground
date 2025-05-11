@@ -21,9 +21,14 @@ public class ReservationService {
 
     public ReservationResponse addReservation(ReservationRequest request) {
         Long newId = index.incrementAndGet();
-        Reservation reservation = request.toEntity(newId);
+        Reservation reservation = request.toReservation(newId);
         reservations.add(reservation);
-        return new ReservationResponse(newId, request);
+        return new ReservationResponse(
+                reservation.getId(),
+                reservation.getName(),
+                reservation.getDate(),
+                reservation.getTime()
+        );
     }
 
     public void deleteReservation(Long id) {
