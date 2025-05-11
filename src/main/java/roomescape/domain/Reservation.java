@@ -3,8 +3,10 @@ package roomescape.domain;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public class Reservation {
 
     private final Long id;
@@ -14,12 +16,4 @@ public class Reservation {
     private final LocalDate date;
 
     private final LocalTime time;
-
-    public Reservation(Long id, String name, LocalDate date, LocalTime time) {
-        this.id = id;
-        this.name = name;
-        this.date = date;
-        this.time = time;
-    }
-
 }
