@@ -12,19 +12,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Void> handleValidationException(MethodArgumentNotValidException e) {
-        log.error("NotFoundException occurred: {}", e.getMessage());
+        log.warn("ValidationException occurred: {}", e.getMessage());
         return ResponseEntity.badRequest().build();
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Void> handleIllegalArgumentException(IllegalArgumentException e) {
-        log.error("IllegalArgumentException occurred: {}", e.getMessage());
+        log.warn("IllegalArgumentException occurred: {}", e.getMessage());
         return ResponseEntity.badRequest().build();
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Void> handleNotFoundException(NotFoundException e) {
-        log.error("NotFoundException occurred: {}", e.getMessage());
-        return ResponseEntity.badRequest().build();
+        log.info("NotFoundException occurred: {}", e.getMessage());
+        return ResponseEntity.ok().build();
     }
 }
