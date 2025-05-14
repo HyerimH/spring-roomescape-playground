@@ -15,9 +15,9 @@ import roomescape.exception.NotFoundException;
 @RequiredArgsConstructor
 public class ReservationService {
 
-    private final AtomicLong index = new AtomicLong(0);
     private final ReservationDAO reservationDAO;
-
+    private final List<Reservation> reservations = new ArrayList<>();
+    private final AtomicLong index = new AtomicLong(0);
 
     public List<Reservation> getAllReservations() {
         return reservationDAO.findAllReservations();
@@ -26,7 +26,7 @@ public class ReservationService {
     public ReservationResponse addReservation(ReservationRequest request) {
         Long newId = index.incrementAndGet();
         Reservation reservation = request.toReservation(newId);
-        reservationDAO.addReservation(reservation);
+        reservations.add(reservation);
         return new ReservationResponse(
                 reservation.getId(),
                 reservation.getName(),
@@ -35,11 +35,15 @@ public class ReservationService {
         );
     }
 
+    public Reservation findReservationById(Long id) {
+        return reservationDAO.findReservationById(id);
+    }
+
     public void deleteReservation(Long id) {
-        Reservation reservation = reservationDAO.findReservationById(id);
-        if (reservation == null) {
+        boolean isDeleted = reservations.removeIf(reservation -> reservation.equals(new Reservation(id, null, null, null)));
+        if (!isDeleted) {
             throw new NotFoundException("해당 예약을 찾을 수 없습니다: " + id);
         }
-        reservationDAO.deleteReservation(id);
     }
 }
+
