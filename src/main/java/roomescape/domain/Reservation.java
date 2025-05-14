@@ -2,6 +2,7 @@ package roomescape.domain;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -16,4 +17,8 @@ public class Reservation {
     private final LocalDate date;
 
     private final LocalTime time;
+
+    public boolean hasId(Long id) {
+        return Objects.equals(this.id, id);
+    }
 }
