@@ -12,11 +12,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Reservation {
 
-    final Long id;
+    private final Long id;
 
-    final String name;
+    private final String name;
 
-    final LocalDate date;
+    private final LocalDate date;
 
-    final LocalTime time;
+    private final LocalTime time;
+
+    public boolean hasId(Long id) {
+        return Objects.equals(this.id, id);
+    }
 }

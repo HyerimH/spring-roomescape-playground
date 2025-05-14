@@ -16,7 +16,7 @@ public class ReservationService {
     private final AtomicLong index = new AtomicLong(0);
 
     public List<Reservation> getAllReservations() {
-        return reservations;
+        return new ArrayList<>(reservations);
     }
 
     public ReservationResponse addReservation(ReservationRequest request) {
@@ -32,8 +32,8 @@ public class ReservationService {
     }
 
     public void deleteReservation(Long id) {
-        boolean removed = reservations.removeIf(reservation -> reservation.getId().equals(id));
-        if (!removed) {
+        boolean isDeleted = reservations.removeIf(reservation -> reservation.hasId(id));
+        if (!isDeleted) {
             throw new NotFoundException("해당 예약을 찾을 수 없습니다: " + id);
         }
     }
