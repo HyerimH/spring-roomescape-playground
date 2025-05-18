@@ -8,11 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import roomescape.domain.Reservation;
 import roomescape.exception.NotFoundException;
 
-@Component
+@Repository
 @RequiredArgsConstructor
 public class ReservationDAO {
 
