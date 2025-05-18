@@ -16,11 +16,18 @@ import roomescape.exception.NotFoundException;
 @RequiredArgsConstructor
 public class ReservationDAO {
 
+    private static final RowMapper<Reservation> RESERVATION_ROW_MAPPER = (resultSet, rowNum) -> new Reservation(
+            resultSet.getLong("id"),
+            resultSet.getString("name"),
+            LocalDate.parse(resultSet.getString("date")),
+            LocalTime.parse(resultSet.getString("time"))
+    );
+
     private final JdbcTemplate jdbcTemplate;
 
     public List<Reservation> findAllReservations() {
         String query = "SELECT id, name, date, time FROM RESERVATION";
-        List<Reservation> reservations = jdbcTemplate.query(query, mapRowToReservation());
+        List<Reservation> reservations = jdbcTemplate.query(query, RESERVATION_ROW_MAPPER);
         return new ArrayList<>(reservations);
     }
 
@@ -28,18 +35,9 @@ public class ReservationDAO {
         String query = "SELECT * FROM RESERVATION WHERE id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(query, mapRowToReservation(), id);
+            return jdbcTemplate.queryForObject(query, RESERVATION_ROW_MAPPER, id);
         } catch (EmptyResultDataAccessException e) {
             throw new NotFoundException("해당 Reservation을 찾을 수 없습니다. ID: " + id);
         }
-    }
-
-    private RowMapper<Reservation> mapRowToReservation() {
-        return (resultSet, rowNum) -> new Reservation(
-                resultSet.getLong("id"),
-                resultSet.getString("name"),
-                LocalDate.parse(resultSet.getString("date")),
-                LocalTime.parse(resultSet.getString("time"))
-        );
     }
 }
