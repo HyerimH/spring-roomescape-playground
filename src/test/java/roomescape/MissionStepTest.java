@@ -112,6 +112,7 @@ public class MissionStepTest {
     }
 
     @Test
+    @DisplayName("데이터베이스 연결과 reservation 테이블 존재 여부를 확인한다")
     void 오단계() {
         try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
             assertThat(connection).isNotNull();
@@ -123,8 +124,10 @@ public class MissionStepTest {
     }
 
     @Test
+    @DisplayName("데이터베이스에 삽입된 예약이 API 조회 결과와 일치한다")
     void 육단계() {
-        jdbcTemplate.update("INSERT INTO reservation (name, date, time) VALUES (?, ?, ?)", "브라운", "2023-08-05",
+        jdbcTemplate.update("INSERT INTO reservation (name, date, time) "
+                            + "VALUES (?, ?, ?)", "브라운", "2023-08-05",
                 "15:40");
 
         List<Reservation> reservations = RestAssured.given().log().all()
@@ -138,4 +141,31 @@ public class MissionStepTest {
         assertThat(reservations.size()).isEqualTo(count);
     }
 
+    @Test
+    @DisplayName("예약 생성과 삭제 후 데이터베이스 상태가 올바르게 반영된다")
+    void 칠단계() {
+        Map<String, String> params = new HashMap<>();
+        params.put("name", "브라운");
+        params.put("date", "2023-08-05");
+        params.put("time", "10:00");
+
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(params)
+                .when().post("/reservations")
+                .then().log().all()
+                .statusCode(201)
+                .header("Location", "/reservations/1");
+
+        Integer count = jdbcTemplate.queryForObject("SELECT count(1) from reservation", Integer.class);
+        assertThat(count).isEqualTo(1);
+
+        RestAssured.given().log().all()
+                .when().delete("/reservations/1")
+                .then().log().all()
+                .statusCode(204);
+
+        Integer countAfterDelete = jdbcTemplate.queryForObject("SELECT count(1) from reservation", Integer.class);
+        assertThat(countAfterDelete).isEqualTo(0);
+    }
 }
