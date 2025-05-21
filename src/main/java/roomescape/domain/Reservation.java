@@ -23,6 +23,7 @@ public class Reservation {
     public Reservation(String name, LocalDate date, LocalTime time) {
         this(null, name, date, time);
     }
+
     public Reservation withId(Long id) {
         return new Reservation(id, this.name, this.date, this.time);
     }

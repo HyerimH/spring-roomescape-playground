@@ -61,7 +61,7 @@ public class ReservationDAO {
         String query = "DELETE FROM RESERVATION WHERE id = ?";
         int update = jdbcTemplate.update(query, id);
         if (update == 0) {
-            throw new NotFoundException("해당 예약을 찾을 수 없습니다: " + id);
+            throw new NotFoundException("해당 Reservation을 찾을 수 없습니다: " + id);
         }
     }
 }
