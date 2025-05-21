@@ -1,7 +1,6 @@
 package roomescape.domain;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +17,17 @@ public class Reservation {
 
     private final LocalDate date;
 
-    private final LocalTime time;
+    private final Time time;
 
-    public Reservation(String name, LocalDate date, LocalTime time) {
+    public Reservation(String name, LocalDate date, Time time) {
         this(null, name, date, time);
     }
 
     public Reservation withId(Long id) {
         return new Reservation(id, this.name, this.date, this.time);
+    }
+
+    public Long getTimeId(){
+        return time.getId();
     }
 }

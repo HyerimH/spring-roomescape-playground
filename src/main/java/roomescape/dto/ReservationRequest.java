@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import roomescape.domain.Reservation;
+import roomescape.domain.Time;
 
 @Getter
 @RequiredArgsConstructor
@@ -21,10 +22,9 @@ public class ReservationRequest {
     private final LocalDate date;
 
     @NotNull(message = "시간은 필수입니다.")
-    @JsonFormat(pattern = "HH:mm")
-    private final LocalTime time;
+    private final Long timeId;
 
-    public Reservation toReservation() {
+    public Reservation toReservation(Time time) {
         return new Reservation(name, date, time);
     }
 }

@@ -2,6 +2,7 @@ package roomescape;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
+import roomescape.controller.ReservationController;
 import roomescape.domain.Reservation;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,6 +26,9 @@ public class MissionStepTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private ReservationController reservationController;
 
     @Test
     @DisplayName("홈 화면 요청 시 상태 코드 200을 반환한다")
@@ -193,5 +198,36 @@ public class MissionStepTest {
                 .when().delete("/times/1")
                 .then().log().all()
                 .statusCode(204);
+    }
+
+    @Test
+    @DisplayName("기존 예약 추가 API 스펙에 맞춰 보낼 경우 에러가 발생한다")
+    void 구단계() {
+        Map<String, String> reservation = new HashMap<>();
+        reservation.put("name", "브라운");
+        reservation.put("date", "2023-08-05");
+        reservation.put("time", "10:00");
+
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(reservation)
+                .when().post("/reservations")
+                .then().log().all()
+                .statusCode(400);
+    }
+
+    @Test
+    @DisplayName("ReservationController는 JdbcTemplate을 직접 주입받지 않는다")
+    void 십단계() {
+        boolean isJdbcTemplateInjected = false;
+
+        for (Field field : reservationController.getClass().getDeclaredFields()) {
+            if (field.getType().equals(JdbcTemplate.class)) {
+                isJdbcTemplateInjected = true;
+                break;
+            }
+        }
+
+        assertThat(isJdbcTemplateInjected).isFalse();
     }
 }

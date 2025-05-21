@@ -2,6 +2,7 @@ package roomescape.dao;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import roomescape.domain.Time;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,8 @@ public class ReservationDAO {
             resultSet.getLong("id"),
             resultSet.getString("name"),
             LocalDate.parse(resultSet.getString("date")),
-            LocalTime.parse(resultSet.getString("time"))
+            new Time(resultSet.getLong("time_id"),
+                    LocalTime.parse(resultSet.getString("time_value")))
     );
 
     private final JdbcTemplate jdbcTemplate;
@@ -35,13 +37,23 @@ public class ReservationDAO {
     }
 
     public List<Reservation> findAllReservations() {
-        String query = "SELECT id, name, date, time FROM RESERVATION";
+        String query = """
+        SELECT r.id AS reservation_id, r.name, r.date,
+               t.id AS time_id, t.time AS time_value
+        FROM reservation r
+        INNER JOIN time t ON r.time_id = t.id
+        """;
         return jdbcTemplate.query(query, RESERVATION_ROW_MAPPER);
     }
 
     public Reservation findReservationById(final Long id) {
-        String query = "SELECT * FROM RESERVATION WHERE id = ?";
-
+        String query = """
+        SELECT r.id AS reservation_id, r.name, r.date,
+               t.id AS time_id, t.time AS time_value
+        FROM reservation r
+        INNER JOIN time t ON r.time_id = t.id
+        WHERE r.id = ?
+        """;
         try {
             return jdbcTemplate.queryForObject(query, RESERVATION_ROW_MAPPER, id);
         } catch (EmptyResultDataAccessException e) {
@@ -53,7 +65,7 @@ public class ReservationDAO {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("name", reservation.getName());
         parameters.put("date", reservation.getDate().toString());
-        parameters.put("time", reservation.getTime().toString());
+        parameters.put("time_id", reservation.getTimeId());
         return simpleJdbcInsert.executeAndReturnKey(parameters).longValue();
     }
 

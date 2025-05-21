@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import roomescape.domain.Reservation;
+import roomescape.domain.Time;
 import roomescape.exception.NotFoundException;
 
 @SpringBootTest
@@ -18,14 +19,20 @@ class ReservationDAOTest {
     @Autowired
     private ReservationDAO reservationDAO;
 
+    @Autowired
+    private TimeDAO timeDAO;
+
     private Reservation insertedReservation;
 
     @BeforeEach
     void setUp() {
-        Reservation reservation = new Reservation("testReservation", LocalDate.parse("2023-08-05"),
-                LocalTime.parse("19:25"));
-        Long id = reservationDAO.insertReservation(reservation);
-        insertedReservation = reservation.withId(id);
+        Time time = new Time(LocalTime.parse("19:25"));
+        Long timeId = timeDAO.insertTime(time);
+        Time savedTime = time.withId(timeId);
+
+        Reservation reservation = new Reservation("testReservation", LocalDate.parse("2023-08-05"), savedTime);
+        Long reservationId = reservationDAO.insertReservation(reservation);
+        insertedReservation = reservation.withId(reservationId);
     }
 
     @Test

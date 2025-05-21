@@ -4,7 +4,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import roomescape.dao.ReservationDAO;
+import roomescape.dao.TimeDAO;
 import roomescape.domain.Reservation;
+import roomescape.domain.Time;
 import roomescape.dto.ReservationRequest;
 import roomescape.dto.ReservationResponse;
 
@@ -13,9 +15,11 @@ import roomescape.dto.ReservationResponse;
 public class ReservationService {
 
     private final ReservationDAO reservationDAO;
+    private final TimeDAO timeDAO;
 
     public ReservationResponse createReservation(ReservationRequest request) {
-        Reservation reservation = request.toReservation();
+        Time time = timeDAO.findTimeById(request.getTimeId());
+        Reservation reservation = request.toReservation(time);
         Long newId = reservationDAO.insertReservation(reservation);
         Reservation savedReservation = reservation.withId(newId);
         return new ReservationResponse(
