@@ -1,7 +1,5 @@
 package roomescape.dao;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import roomescape.domain.Time;
 import java.util.HashMap;
 import java.util.List;
@@ -21,10 +19,11 @@ public class ReservationDAO {
             rowNum) -> new Reservation(
             resultSet.getLong("id"),
             resultSet.getString("name"),
-            LocalDate.parse(resultSet.getString("date")),
+            resultSet.getDate("date").toLocalDate(),
             new Time(resultSet.getLong("time_id"),
-                    LocalTime.parse(resultSet.getString("time_value")))
+                    resultSet.getTime("time_value").toLocalTime())
     );
+
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert simpleJdbcInsert;

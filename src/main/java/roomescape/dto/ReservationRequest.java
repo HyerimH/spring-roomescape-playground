@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import roomescape.domain.Reservation;
@@ -22,7 +21,7 @@ public class ReservationRequest {
     private final LocalDate date;
 
     @NotNull(message = "시간은 필수입니다.")
-    private final Long timeId;
+    private final Long time;
 
     public Reservation toReservation(Time time) {
         return new Reservation(name, date, time);

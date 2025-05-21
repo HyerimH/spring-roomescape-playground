@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalTime;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import roomescape.domain.Time;
 
 @Getter

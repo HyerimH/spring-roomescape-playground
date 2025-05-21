@@ -1,6 +1,5 @@
 package roomescape.dao;
 
-import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +17,7 @@ public class TimeDAO {
     private static final RowMapper<Time> TIME_ROW_MAPPER = (resultSet, rowNum)
             -> new Time(
             resultSet.getLong("id"),
-            LocalTime.parse(resultSet.getString("time"))
+            resultSet.getTime("time").toLocalTime()
     );
 
     private final JdbcTemplate jdbcTemplate;
