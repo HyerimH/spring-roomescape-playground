@@ -1,14 +1,10 @@
 package roomescape.dto;
 
 import java.time.LocalTime;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-@Getter
-@RequiredArgsConstructor
-public class TimeResponse {
+public record TimeResponse(
+        Long id,
+        LocalTime time
+) {
 
-    private final Long id;
-
-    private final LocalTime time;
 }

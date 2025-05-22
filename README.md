@@ -156,6 +156,31 @@
 ---
 ## 📝 참고사항
 
+
+
+**Domain Model**
+```mermaid
+classDiagram
+    class Reservation {
+        +Long id
+        +String name
+        +LocalDate date
+        +Long timeId
+        +Reservation(String name, LocalDate date, Long timeId)
+        +Reservation withId(Long id) Reservation
+        +Long getTimeId()
+    }
+    class Time {
+        +Long id
+        +LocalTime time
+        +Time(LocalTime time)
+        +Time withId(Long id) Time
+    }
+
+    Reservation --> Time : references
+```
+
+
 ### 데이터 형식
 - `date`: `YYYY-MM-DD` (예: `2025-05-10`)
 - `time`: `HH:MM` (예: `14:00`)
@@ -168,3 +193,4 @@
 ### ID 관리
 - 기본 키는 AUTO_INCREMENT 방식으로 관리
 - SimpleJdbcInsert를 통해 데이터베이스에서 자동으로 생성된 값을 받아와 사용
+

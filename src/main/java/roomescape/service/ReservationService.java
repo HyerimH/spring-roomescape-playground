@@ -18,16 +18,11 @@ public class ReservationService {
     private final TimeDAO timeDAO;
 
     public ReservationResponse createReservation(ReservationRequest request) {
-        Time time = timeDAO.findTimeById(request.getTime());
+        Time time = timeDAO.findTimeById(request.time());
         Reservation reservation = request.toReservation(time);
         Long newId = reservationDAO.insertReservation(reservation);
         Reservation savedReservation = reservation.withId(newId);
-        return new ReservationResponse(
-                savedReservation.getId(),
-                savedReservation.getName(),
-                savedReservation.getDate(),
-                savedReservation.getTime()
-        );
+        return ReservationResponse.from(savedReservation);
     }
 
     public List<Reservation> getAllReservations() {

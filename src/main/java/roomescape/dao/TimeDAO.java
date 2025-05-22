@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import roomescape.domain.Time;
@@ -20,26 +21,29 @@ public class TimeDAO {
             resultSet.getTime("time").toLocalTime()
     );
 
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final SimpleJdbcInsert simpleJdbcInsert;
 
-    public TimeDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+    public TimeDAO(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        this.simpleJdbcInsert = new SimpleJdbcInsert(namedParameterJdbcTemplate.getJdbcTemplate())
                 .withTableName("time")
                 .usingGeneratedKeyColumns("id");
     }
 
     public List<Time> findAllTimes() {
         String query = "SELECT id, time FROM TIME";
-        return jdbcTemplate.query(query, TIME_ROW_MAPPER);
+        return namedParameterJdbcTemplate.query(query, TIME_ROW_MAPPER);
     }
 
     public Time findTimeById(final Long id) {
-        String query = "SELECT * FROM TIME WHERE id = ?";
+        String query = "SELECT * FROM time WHERE id = :id";
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("id", id);
 
         try {
-            return jdbcTemplate.queryForObject(query, TIME_ROW_MAPPER, id);
+            return namedParameterJdbcTemplate.queryForObject(query, parameters, TIME_ROW_MAPPER);
         } catch (EmptyResultDataAccessException e) {
             throw new NotFoundException("해당 Time을 찾을 수 없습니다. ID: " + id);
         }
@@ -52,9 +56,13 @@ public class TimeDAO {
     }
 
     public void deleteTime(final Long id) {
-        String query = "DELETE FROM TIME WHERE id = ?";
-        int update = jdbcTemplate.update(query, id);
-        if (update == 0) {
+        String query = "DELETE FROM TIME WHERE id = :id";
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("id", id);
+
+        int deletedCount = namedParameterJdbcTemplate.update(query, parameters);
+        if (deletedCount == 0) {
             throw new NotFoundException("해당 Time을 찾을 수 없습니다: " + id);
         }
     }

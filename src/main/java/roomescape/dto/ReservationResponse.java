@@ -1,19 +1,22 @@
 package roomescape.dto;
 
 import java.time.LocalDate;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import roomescape.domain.Reservation;
 import roomescape.domain.Time;
 
-@Getter
-@RequiredArgsConstructor
-public class ReservationResponse {
+public record ReservationResponse(
+        Long id,
+        String name,
+        LocalDate date,
+        Time time
+) {
 
-    private final Long id;
-
-    private final String name;
-
-    private final LocalDate date;
-
-    private final Time time;
+    public static ReservationResponse from(Reservation reservation) {
+        return new ReservationResponse(
+                reservation.getId(),
+                reservation.getName(),
+                reservation.getDate(),
+                reservation.getTime()
+        );
+    }
 }

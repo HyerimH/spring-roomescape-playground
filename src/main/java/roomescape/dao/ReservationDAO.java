@@ -1,11 +1,11 @@
 package roomescape.dao;
 
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import roomescape.domain.Time;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -25,36 +25,39 @@ public class ReservationDAO {
     );
 
 
-    private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final SimpleJdbcInsert simpleJdbcInsert;
 
-    public ReservationDAO(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
+    public ReservationDAO(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        this.simpleJdbcInsert = new SimpleJdbcInsert(namedParameterJdbcTemplate.getJdbcTemplate())
                 .withTableName("reservation")
                 .usingGeneratedKeyColumns("id");
     }
 
     public List<Reservation> findAllReservations() {
         String query = """
-        SELECT r.id AS reservation_id, r.name, r.date,
-               t.id AS time_id, t.time AS time_value
-        FROM reservation r
-        INNER JOIN time t ON r.time_id = t.id
-        """;
-        return jdbcTemplate.query(query, RESERVATION_ROW_MAPPER);
+                SELECT r.id AS reservation_id, r.name, r.date,
+                       t.id AS time_id, t.time AS time_value
+                FROM reservation r
+                INNER JOIN time t ON r.time_id = t.id
+                """;
+        return namedParameterJdbcTemplate.query(query, RESERVATION_ROW_MAPPER);
     }
 
     public Reservation findReservationById(final Long id) {
         String query = """
-        SELECT r.id AS reservation_id, r.name, r.date,
-               t.id AS time_id, t.time AS time_value
-        FROM reservation r
-        INNER JOIN time t ON r.time_id = t.id
-        WHERE r.id = ?
-        """;
+                SELECT r.id AS reservation_id, r.name, r.date,
+                       t.id AS time_id, t.time AS time_value
+                FROM reservation r
+                INNER JOIN time t ON r.time_id = t.id
+                WHERE r.id = :id
+                """;
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("id", id);
+
         try {
-            return jdbcTemplate.queryForObject(query, RESERVATION_ROW_MAPPER, id);
+            return namedParameterJdbcTemplate.queryForObject(query, parameters, RESERVATION_ROW_MAPPER);
         } catch (EmptyResultDataAccessException e) {
             throw new NotFoundException("해당 Reservation을 찾을 수 없습니다. ID: " + id);
         }
@@ -69,9 +72,13 @@ public class ReservationDAO {
     }
 
     public void deleteReservation(final Long id) {
-        String query = "DELETE FROM RESERVATION WHERE id = ?";
-        int update = jdbcTemplate.update(query, id);
-        if (update == 0) {
+        String query = "DELETE FROM RESERVATION WHERE id = :id";
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("id", id);
+
+        int deletedCount = namedParameterJdbcTemplate.update(query, parameters);
+        if (deletedCount == 0) {
             throw new NotFoundException("해당 Reservation을 찾을 수 없습니다: " + id);
         }
     }

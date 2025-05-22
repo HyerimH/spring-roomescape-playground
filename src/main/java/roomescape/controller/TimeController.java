@@ -36,7 +36,7 @@ public class TimeController {
     public ResponseEntity<TimeResponse> createTime(@Valid @RequestBody TimeRequest request) {
         TimeResponse response = timeService.createTime(request);
         return ResponseEntity
-                .created(URI.create("/times/" + response.getId()))
+                .created(URI.create("/times/" + response.id()))
                 .body(response);
     }
 
