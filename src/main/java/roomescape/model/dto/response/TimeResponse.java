@@ -1,4 +1,4 @@
-package roomescape.dto;
+package roomescape.model.dto.response;
 
 import java.time.LocalTime;
 

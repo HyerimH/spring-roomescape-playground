@@ -4,9 +4,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import roomescape.dao.TimeDAO;
-import roomescape.domain.Time;
-import roomescape.dto.TimeRequest;
-import roomescape.dto.TimeResponse;
+import roomescape.model.domain.Time;
+import roomescape.model.dto.request.TimeRequest;
+import roomescape.model.dto.response.TimeResponse;
 
 @Service
 @RequiredArgsConstructor
