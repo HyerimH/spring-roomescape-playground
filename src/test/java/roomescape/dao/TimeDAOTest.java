@@ -45,8 +45,8 @@ class TimeDAOTest {
     }
 
     @Test
-    void deleteTime() {
-        timeDAO.deleteTime(insertedTime.getId());
+    void deleteTimeById() {
+        timeDAO.deleteTimeById(insertedTime.getId());
         assertThatThrownBy(() -> timeDAO.findTimeById(insertedTime.getId()))
                 .isInstanceOf(NotFoundException.class);
     }

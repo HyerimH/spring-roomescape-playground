@@ -54,7 +54,7 @@ public class TimeDAO {
         return simpleJdbcInsert.executeAndReturnKey(parameters).longValue();
     }
 
-    public void deleteTime(final Long id) {
+    public void deleteTimeById(final Long id) {
         String query = "DELETE FROM TIME WHERE id = :id";
 
         Map<String, Object> parameters = new HashMap<>();

@@ -33,8 +33,8 @@ public class ReservationService {
         return reservationDAO.findReservationById(id);
     }
 
-    public void deleteReservation(Long id) {
-        reservationDAO.deleteReservation(id);
+    public void deleteReservationById(Long id) {
+        reservationDAO.deleteReservationById(id);
     }
 }
 

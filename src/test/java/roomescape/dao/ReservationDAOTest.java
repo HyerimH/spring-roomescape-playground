@@ -54,8 +54,8 @@ class ReservationDAOTest {
     }
 
     @Test
-    void deleteReservation() {
-        reservationDAO.deleteReservation(insertedReservation.getId());
+    void deleteReservationById() {
+        reservationDAO.deleteReservationById(insertedReservation.getId());
         assertThatThrownBy(() -> reservationDAO.findReservationById(insertedReservation.getId()))
                 .isInstanceOf(NotFoundException.class);
     }

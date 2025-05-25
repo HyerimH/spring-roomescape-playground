@@ -32,7 +32,7 @@ public class TimeService {
         return timeDAO.findTimeById(id);
     }
 
-    public void deleteTime(Long id) {
-        timeDAO.deleteTime(id);
+    public void deleteTimeById(Long id) {
+        timeDAO.deleteTimeById(id);
     }
 }

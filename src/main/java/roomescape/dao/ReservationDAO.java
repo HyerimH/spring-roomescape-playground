@@ -71,7 +71,7 @@ public class ReservationDAO {
         return simpleJdbcInsert.executeAndReturnKey(parameters).longValue();
     }
 
-    public void deleteReservation(final Long id) {
+    public void deleteReservationById(final Long id) {
         String query = "DELETE FROM RESERVATION WHERE id = :id";
 
         Map<String, Object> parameters = new HashMap<>();
