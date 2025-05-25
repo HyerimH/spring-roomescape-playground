@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import roomescape.dao.ReservationDAO;
 import roomescape.dao.TimeDAO;
-import roomescape.model.domain.Reservation;
-import roomescape.model.domain.Time;
-import roomescape.model.dto.request.ReservationRequest;
-import roomescape.model.dto.response.ReservationResponse;
+import roomescape.domain.Reservation;
+import roomescape.domain.Time;
+import roomescape.service.dto.request.ReservationRequest;
+import roomescape.service.dto.response.ReservationResponse;
 
 @Service
 @RequiredArgsConstructor

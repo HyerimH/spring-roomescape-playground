@@ -1,11 +1,11 @@
-package roomescape.model.dto.request;
+package roomescape.service.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
-import roomescape.model.domain.Reservation;
-import roomescape.model.domain.Time;
+import roomescape.domain.Reservation;
+import roomescape.domain.Time;
 
 public record ReservationRequest(
         @NotBlank(message = "이름은 필수입니다.")

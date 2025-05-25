@@ -1,9 +1,9 @@
-package roomescape.model.dto.request;
+package roomescape.service.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalTime;
-import roomescape.model.domain.Time;
+import roomescape.domain.Time;
 
 public record TimeRequest(
         @NotNull(message = "시간은 필수입니다.")

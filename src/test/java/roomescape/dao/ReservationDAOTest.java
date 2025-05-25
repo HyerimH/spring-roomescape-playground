@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
-import roomescape.model.domain.Reservation;
-import roomescape.model.domain.Time;
+import roomescape.domain.Reservation;
+import roomescape.domain.Time;
 import roomescape.exception.NotFoundException;
 
 @JdbcTest

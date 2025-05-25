@@ -1,7 +1,7 @@
 package roomescape.dao;
 
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import roomescape.model.domain.Time;
+import roomescape.domain.Time;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-import roomescape.model.domain.Reservation;
+import roomescape.domain.Reservation;
 import roomescape.exception.NotFoundException;
 
 @Repository
